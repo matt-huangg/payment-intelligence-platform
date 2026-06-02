@@ -2,7 +2,11 @@
 
 A cloud-native payment orchestration and transaction processing platform built to model the backend, infrastructure, and operational patterns used in modern fintech systems.
 
+This project is evolving into a cloud-native payment intelligence platform with AI-powered operational workflows. The AI layer is designed to complement the payment system by helping operations, support, and engineering teams investigate payment behavior, summarize incidents, search transaction history semantically, and understand reconciliation issues.
+
 This project is not intended to become a real payment processor. Its purpose is to demonstrate production-style backend engineering through payment lifecycle management, asynchronous transaction processing, ledger-based recordkeeping, idempotent APIs, infrastructure as code, deployment automation, and cloud-native operations.
+
+It is also not intended to become a generic chatbot or thin AI wrapper. The AI components are planned as grounded operational intelligence workflows built on top of payment events, ledger entries, retrieval pipelines, embeddings, vector search, and human-reviewed investigation flows.
 
 ## Project Goals
 
@@ -17,6 +21,11 @@ This project is designed to practice and demonstrate:
 - Operational reliability
 - Payment system fundamentals
 - Production engineering practices
+- AI application architecture
+- Retrieval-augmented generation
+- Embeddings and vector search
+- AI workflow orchestration
+- AI observability and evaluation
 
 ## Planned Architecture
 
@@ -43,6 +52,31 @@ ECS FastAPI API Service
 ```
 
 The API service will handle synchronous client-facing requests, while the worker service will process queued payment events asynchronously. PostgreSQL will store payment state, immutable payment events, ledger entries, and idempotency records.
+
+## AI-Enabled Architecture
+
+The AI systems layer builds on the same production backend primitives rather than replacing them. Payment events and ledger entries become the source of truth for retrieval, summarization, anomaly investigation, and operational reporting.
+
+```text
+Client
+  |
+  v
+FastAPI API
+  |
+  +--> PostgreSQL
+  +--> Payment Events
+  +--> Ledger Entries
+  +--> SQS
+  +--> AI Enrichment Pipeline
+          |
+          +--> Embedding Generation
+          +--> pgvector
+          +--> Retrieval Layer
+          +--> OpenAI / Bedrock
+          +--> AI Evaluation & Monitoring
+```
+
+The enrichment pipeline will transform payment events, ledger entries, incident notes, and reconciliation outputs into searchable operational context. Embeddings will support semantic search over payment history, while retrieval-augmented generation will keep AI responses grounded in auditable platform data.
 
 ## Core Concepts
 
@@ -92,6 +126,70 @@ The system will use Amazon SQS for asynchronous workflows such as:
 
 Asynchronous processing allows the API to remain responsive while background workers handle operations that may fail, retry, or require isolation from client requests.
 
+### AI Operational Intelligence
+
+The AI layer will use retrieved payment context, ledger data, and operational events to support investigation workflows. It will not make financial decisions or execute irreversible payment actions. Instead, it will assist human operators by producing grounded summaries, highlighting related transactions, and proposing likely explanations that can be reviewed.
+
+## AI-Powered Operational Intelligence
+
+AI is planned as an operational intelligence layer for the payment platform. It will be used to:
+
+- Analyze payment failures
+- Summarize operational incidents
+- Investigate transaction anomalies
+- Search payment history semantically
+- Assist support and operations teams
+- Generate reconciliation summaries
+- Explain unusual financial activity
+
+The emphasis is on production AI systems engineering: retrieval pipelines, context construction, evaluation, observability, and workflow orchestration.
+
+### Semantic Transaction Search
+
+Users will be able to search payment history using natural operational language such as:
+
+```text
+Show me transactions similar to this failed payment.
+```
+
+The platform will use embeddings and vector search to retrieve payment events, ledger entries, and historical incidents with similar operational patterns. This enables support and operations teams to find related failures even when exact identifiers, status codes, or error messages differ.
+
+### AI Incident Summaries
+
+The system will generate concise operational summaries for:
+
+- Payment failures
+- Processing delays
+- Reconciliation issues
+
+Summaries will be grounded in retrieved transaction context, payment event timelines, ledger entries, retry attempts, and worker processing metadata.
+
+### AI Investigation Assistant
+
+The investigation assistant will provide grounded explanations for:
+
+- Failed captures
+- Duplicate requests
+- Suspicious transaction behavior
+
+It will use retrieval-augmented generation to cite relevant payment events, idempotency records, ledger entries, and similar historical incidents. The goal is to reduce investigation time while keeping the explanation tied to auditable backend data.
+
+### Reconciliation Copilot
+
+The reconciliation copilot will analyze ledger discrepancies and propose likely root causes, such as missing capture entries, delayed async processing, duplicate idempotency attempts, refund mismatches, or worker retry side effects.
+
+### AI Workflow Agents
+
+Agent-based workflows will coordinate multi-step operational investigations while remaining human-reviewed. Planned workflows include:
+
+- Investigating payment failures
+- Gathering relevant payment events
+- Retrieving historical incidents
+- Comparing ledger entries against payment state
+- Generating operational reports
+
+These workflows are intended to demonstrate agent orchestration, tool use, retrieval, evaluation, and observability in a realistic backend platform context.
+
 ## Planned Tech Stack
 
 ### Backend
@@ -111,6 +209,18 @@ Asynchronous processing allows the API to remain responsive while background wor
 - Amazon SQS
 - Amazon ECR
 - CloudWatch
+
+### AI Systems
+
+- OpenAI and/or Amazon Bedrock
+- Embedding generation
+- pgvector
+- Vector search
+- Retrieval pipelines
+- RAG workflows
+- AI evaluation datasets
+- AI observability and monitoring
+- Agent workflow orchestration
 
 ### Runtime and Tooling
 
@@ -188,6 +298,12 @@ Build Docker Image
 - Distributed tracing
 - Audit logs
 - Merchant accounts
+- Semantic transaction search
+- AI-generated incident summaries
+- RAG-based payment investigation assistant
+- Reconciliation copilot
+- AI workflow agents for operational investigations
+- AI evaluation and monitoring framework
 
 ## Initial API Design
 
@@ -327,6 +443,18 @@ Planned fields:
 - Blue/green deployments
 - Reconciliation workflows
 
+### Phase 6: AI Systems Layer
+
+- Embeddings pipeline
+- pgvector integration
+- Semantic search
+- Retrieval-augmented generation
+- AI-generated operational summaries
+- Agent workflows
+- Evaluation framework
+- AI observability
+- Prompt and retrieval quality monitoring
+
 ## Learning Objectives
 
 This project is intended to deepen understanding of:
@@ -343,6 +471,16 @@ This project is intended to deepen understanding of:
 - Deployment automation
 - Production observability
 - Operational reliability
+- RAG architecture
+- Embeddings
+- Vector databases
+- pgvector
+- Retrieval systems
+- Agent orchestration
+- AI observability
+- AI evaluation
+- Prompt engineering
+- AI application architecture
 
 ## Engineering Philosophy
 
@@ -353,6 +491,8 @@ This project prioritizes:
 - Auditability
 - Infrastructure maturity
 - Production-style engineering practices
+
+The platform treats AI as an operational intelligence layer built on top of reliable backend systems, not as a standalone application.
 
 The project intentionally deprioritizes frontend development, UI complexity, and broad feature quantity. The main focus is backend systems engineering and cloud infrastructure design.
 
