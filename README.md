@@ -1,12 +1,12 @@
-# Payment Orchestration Platform
+# Cloud-Native Payment Intelligence Platform
 
-A cloud-native payment orchestration and transaction processing platform built to model the backend, infrastructure, and operational patterns used in modern fintech systems.
+A cloud-native payment orchestration and transaction intelligence platform built to model the backend, infrastructure, and operational patterns used in modern fintech systems.
 
-This project is evolving into a cloud-native payment intelligence platform with AI-powered operational workflows. The AI layer is designed to complement the payment system by helping operations, support, and engineering teams investigate payment behavior, summarize incidents, search transaction history semantically, and understand reconciliation issues.
+This project starts as a realistic cloud-native payment orchestration platform and gradually evolves into a payment intelligence platform. The foundation remains backend systems engineering: payment lifecycle management, asynchronous processing, ledger-based recordkeeping, idempotent APIs, infrastructure as code, deployment automation, and cloud-native operations.
 
 This project is not intended to become a real payment processor. Its purpose is to demonstrate production-style backend engineering through payment lifecycle management, asynchronous transaction processing, ledger-based recordkeeping, idempotent APIs, infrastructure as code, deployment automation, and cloud-native operations.
 
-It is also not intended to become a generic chatbot or thin AI wrapper. The AI components are planned as grounded operational intelligence workflows built on top of payment events, ledger entries, retrieval pipelines, embeddings, vector search, and human-reviewed investigation flows.
+It is also not intended to become a generic chatbot or thin AI wrapper. AI is introduced gradually as an intelligence layer built on top of the payment platform. The AI components are planned as grounded operational intelligence workflows built on payment events, ledger entries, retrieval pipelines, embeddings, vector search, and human-reviewed investigation flows.
 
 ## Project Goals
 
@@ -53,6 +53,27 @@ ECS FastAPI API Service
 
 The API service will handle synchronous client-facing requests, while the worker service will process queued payment events asynchronously. PostgreSQL will store payment state, immutable payment events, ledger entries, and idempotency records.
 
+Future platform evolution will add an AI intelligence layer on top of the core payment system:
+
+```text
+Payment Platform
+  |
+  +--> PostgreSQL
+  +--> Payment Events
+  +--> Ledger Entries
+  +--> SQS
+  |
+  v
+AI Intelligence Layer
+  |
+  +--> Embeddings
+  +--> pgvector
+  +--> Retrieval Service
+  +--> RAG Layer
+  +--> Operational Intelligence
+  +--> Agent Workflows
+```
+
 ## AI-Enabled Architecture
 
 The AI systems layer builds on the same production backend primitives rather than replacing them. Payment events and ledger entries become the source of truth for retrieval, summarization, anomaly investigation, and operational reporting.
@@ -69,10 +90,13 @@ FastAPI API
   +--> SQS
   +--> AI Enrichment Pipeline
           |
-          +--> Embedding Generation
+          +--> Embeddings
           +--> pgvector
-          +--> Retrieval Layer
+          +--> Retrieval Service
+          +--> RAG Layer
           +--> OpenAI / Bedrock
+          +--> Operational Intelligence
+          +--> Agent Workflows
           +--> AI Evaluation & Monitoring
 ```
 
@@ -132,7 +156,7 @@ The AI layer will use retrieved payment context, ledger data, and operational ev
 
 ## AI-Powered Operational Intelligence
 
-AI is planned as an operational intelligence layer for the payment platform. It will be used to:
+AI is planned as an operational intelligence layer for the payment platform after the backend, cloud, and operational foundations are in place. It will be used to:
 
 - Analyze payment failures
 - Summarize operational incidents
@@ -404,38 +428,35 @@ Planned fields:
 
 ## Development Roadmap
 
-### Phase 1: Local Application
+### Phase 1: Payment Platform Foundations
+
+Goal: build a realistic cloud-native payment orchestration platform.
+
+Focus areas:
 
 - FastAPI application scaffold
-- PostgreSQL models
+- PostgreSQL models and schema design
+- Payment intents
 - Payment lifecycle logic
-- Local Docker Compose environment
-- Unit tests
-
-### Phase 2: Async Processing
-
+- Payment events
+- Ledger entries
+- Idempotency keys
+- Async processing
 - SQS integration
 - Worker service
 - Retry handling
 - Dead-letter queues
-
-### Phase 3: AWS Infrastructure
-
 - ECS deployment
 - RDS PostgreSQL
 - Application Load Balancer
 - IAM roles and policies
 - Terraform infrastructure
-
-### Phase 4: CI/CD
-
 - GitHub Actions workflows
 - Docker image builds
 - ECR publishing
 - ECS deployment automation
-
-### Phase 5: Operational Maturity
-
+- Local Docker Compose environment
+- Unit tests
 - Metrics
 - Alarms
 - Dashboards
@@ -443,17 +464,156 @@ Planned fields:
 - Blue/green deployments
 - Reconciliation workflows
 
-### Phase 6: AI Systems Layer
+Learning objectives:
 
-- Embeddings pipeline
+- Backend systems engineering
+- Payment orchestration
+- Ledger-based recordkeeping
+- Idempotent APIs
+- Async architectures
+- Distributed systems
+- ECS Fargate
+- Terraform
+- SQS
+- CI/CD
+- Production observability
+
+### Phase 2: Semantic Transaction Search
+
+Goal: add semantic search over payment and operational data without changing the payment platform into a chatbot.
+
+Introduce:
+
+- Embeddings
 - pgvector integration
+- Vector similarity search
+
+Example capability:
+
+```text
+Show me transactions similar to this failed payment.
+```
+
+Learning objectives:
+
+- Embeddings
+- Vector databases
 - Semantic search
+- pgvector
+
+### Phase 3: Retrieval Layer
+
+Goal: build a retrieval service that can search operational context across the payment platform.
+
+The retrieval service will search:
+
+- Payment events
+- Ledger entries
+- Historical failures
+- Operational runbooks
+- Incident reports
+
+Learning objectives:
+
+- Retrieval systems
+- Context construction
+- Search relevance
+- Ranking and filtering
+- Retrieval quality measurement
+
+### Phase 4: RAG
+
+Goal: introduce a Payment Investigation Assistant that generates grounded explanations from retrieved platform data.
+
+Example investigation:
+
+```text
+Why did payment 123 fail?
+```
+
+The system should:
+
+1. Retrieve the payment intent.
+2. Retrieve payment events.
+3. Retrieve ledger records.
+4. Retrieve similar failures.
+5. Retrieve operational documentation.
+6. Generate a grounded explanation.
+
+Learning objectives:
+
 - Retrieval-augmented generation
-- AI-generated operational summaries
-- Agent workflows
-- Evaluation framework
-- AI observability
+- RAG architecture
+- Context engineering
+- Prompt engineering
+- Grounded response generation
 - Prompt and retrieval quality monitoring
+
+### Phase 5: Operational Intelligence
+
+Goal: use AI to summarize, explain, and analyze operational payment behavior for engineering, support, and operations teams.
+
+Planned capabilities:
+
+- AI-generated failure summaries
+- AI-generated incident reports
+- Reconciliation summaries
+- Payment anomaly explanations
+- Operational insights
+- AI evaluation and monitoring framework
+- AI observability
+
+Example capability:
+
+```text
+Summarize the top payment failures from the last 24 hours.
+```
+
+Learning objectives:
+
+- AI application architecture
+- AI evaluation
+- AI observability
+- Operational insight generation
+- Human-reviewed AI workflows
+
+### Phase 6: Agent Workflows
+
+Goal: introduce agent workflows only after the payment foundation, semantic search, retrieval layer, RAG layer, and operational intelligence workflows are complete.
+
+Planned agents:
+
+- Payment Investigation Agent
+- Reconciliation Agent
+- Operational Reporting Agent
+
+Example workflow:
+
+```text
+User: Investigate payment 123.
+
+Agent:
+  - Retrieves payment
+  - Searches historical incidents
+  - Retrieves runbooks
+  - Retrieves ledger data
+  - Generates investigation report
+```
+
+Potential future technologies:
+
+- LangGraph
+- MCP
+- AWS AgentCore
+- Claude Managed Agents
+
+Learning objectives:
+
+- Agent orchestration
+- Multi-step workflows
+- Tool usage
+- Agent architecture
+- AI workflow orchestration
 
 ## Learning Objectives
 
@@ -482,6 +642,21 @@ This project is intended to deepen understanding of:
 - Prompt engineering
 - AI application architecture
 
+## AI Systems Engineering Learning Objectives
+
+The AI systems track is designed to build on the reliable payment platform instead of replacing it. Learning objectives include:
+
+- Embeddings
+- Vector search
+- Retrieval systems
+- RAG
+- Context engineering
+- Agent architecture
+- MCP concepts
+- AI observability
+- AI evaluation
+- AI workflow design
+
 ## Engineering Philosophy
 
 This project prioritizes:
@@ -492,7 +667,7 @@ This project prioritizes:
 - Infrastructure maturity
 - Production-style engineering practices
 
-The platform treats AI as an operational intelligence layer built on top of reliable backend systems, not as a standalone application.
+The platform treats AI as an operational intelligence layer built on top of reliable backend systems rather than as a standalone chatbot application.
 
 The project intentionally deprioritizes frontend development, UI complexity, and broad feature quantity. The main focus is backend systems engineering and cloud infrastructure design.
 

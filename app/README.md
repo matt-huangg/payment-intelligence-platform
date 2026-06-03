@@ -113,7 +113,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "Payment Orchestration Platform"
+    PROJECT_NAME: str = "Cloud-Native Payment Intelligence Platform"
     VERSION: str = "0.1.0"
     DATABASE_URL: str
     AWS_REGION: str = "us-east-1"
